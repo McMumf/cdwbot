@@ -2,7 +2,7 @@
 import os
 import discord
 import json
-
+import functions
 
 client = discord.Client()
 
@@ -28,4 +28,8 @@ async def on_message(message):
         msg = "Fuck you, Dave"
         await message.channel.send(msg)
 
+    if message.content.startswith('$birthday'):
+        birthday_control(msg)
+
+functions.bot_init()
 client.run(os.getenv('DISCORD_TOKEN'))
