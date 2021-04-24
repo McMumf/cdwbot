@@ -1,33 +1,35 @@
 import os
+import discord
 import json
-
-# For basic env initialization
-def bot_init():
-    if os.path.isfile('./birthdays.json') == False:
-        json_object = {}
-        json_object['birthdays'] = []
-        json_object['birthdays'].append({
-            'user_id' : 'CDW Bot#9650',
-            'birthday' : '2021-4-20'
-        })
-        with open('birthdays.json', 'w') as birthday_file:
-            json.dump(json_object, birthday_file)
-            print("The json file is created")
+import utilities
 
 # Manages Birthdays
 # TODO properly get discird user's id from birthday_command[2]
 # TODO properly format/standardize date from birthday_command[3]
-def birthday_control(msg):
+def birthday_controller(msg):
 
-    birthday_command = msg.split(' ')
-    birthday_json_object = json.load("./birthdays.json")
+    birthday_command = msg.content.split(' ')[1:]
+    with open('birthdays.json', 'r') as birthday_file:
+        birthday_json_object = json.load(birthday_file)
 
-    if birthday_command[1] == "add":
-        birthday_json = '{ "userId" : ' + birthday_command[2] + ' "birthday" : ' + birthday_command[3] + '}'
-        birthday_json_object['birthdays'].append({
-            'user_id' : birthday_command[2],
-            'birthday' : birthday_command[3]
-        })
-        with open('birthdays.json', 'rw') as birthday_file:
-            json.dump(birthday_json_object, birthday_file)
-            print("The json file is created")
+    if birthday_command[0] == 'add':
+        if not check_if_user_has_birthday(str(msg.author), birthday_json_object):
+            birthday_json_object['birthdays'].append({
+                '' + str(msg.author) : '' + birthday_command[1]
+            })
+            with open('birthdays.json', 'w') as birthday_file:
+                json.dump(birthday_json_object, birthday_file)
+            return 'Your birthday has been added!'
+        # Fall through
+        return 'Already have your birthday!'
+
+    else:
+        return '`' + birthday_command[0] + '` is not a valid birthday command'
+
+def check_if_user_has_birthday(user, json):
+    for users in json['birthdays']:
+        print(users)
+        if user in users:
+            return True
+
+    return False
