@@ -17,7 +17,7 @@ async def on_ready():
             f'{guild.name}(id: {guild.id})'
         )
 
-# This is where you put the commabds
+# This is where you put the commands
 @client.event
 async def on_message(message):
     if message.author == client.user:
