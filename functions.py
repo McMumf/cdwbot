@@ -2,6 +2,7 @@ import os
 import discord
 import json
 import utilities
+from datetime import datetime
 
 # Manages Birthdays
 # TODO properly get discird user's id from birthday_command[2]
@@ -14,12 +15,21 @@ def birthday_controller(msg):
 
     if birthday_command[0] == 'add':
         if not check_if_user_has_birthday(str(msg.author), birthday_json_object):
-            birthday_json_object['birthdays'].append({
-                '' + str(msg.author) : '' + birthday_command[1]
-            })
-            with open('birthdays.json', 'w') as birthday_file:
-                json.dump(birthday_json_object, birthday_file)
-            return 'Your birthday has been added!'
+            for format in ("%m/%d/%Y", "%m-%d-%Y", "%Y/%m/%d"):
+                try:
+                    date = datetime.strptime(birthday_command[1], format)
+                    birthday_json_object['birthdays'].append({
+                        '' + str(msg.author) : '' + date.strftime("%Y-%m-%d")
+                    })
+                    with open('birthdays.json', 'w') as birthday_file:
+                        json.dump(birthday_json_object, birthday_file)
+                    return 'Your birthday has been added!'
+
+                except:
+                    pass
+
+            return 'Invalid date'
+
         # Fall through
         return 'Already have your birthday!'
 
@@ -28,7 +38,6 @@ def birthday_controller(msg):
 
 def check_if_user_has_birthday(user, json):
     for users in json['birthdays']:
-        print(users)
         if user in users:
             return True
 

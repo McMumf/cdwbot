@@ -1,5 +1,7 @@
 import os
 import json
+import re
+from datetime import datetime
 
 # For basic env initialization
 def bot_init():
@@ -7,7 +9,7 @@ def bot_init():
         json_object = {}
         json_object['birthdays'] = []
         json_object['birthdays'].append({
-            'CDW Bot#9650': '2021-4-20'
+            'CDW Bot#9650': format_date('4/20/2021')
         })
         with open('birthdays.json', 'w') as birthday_file:
             json.dump(json_object, birthday_file)
