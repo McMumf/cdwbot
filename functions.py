@@ -50,10 +50,3 @@ def birthday_controller(msg):
         return 'User not found~\nplease add your birthday using `$birthday add <date>`'
     else:
         return '`' + birthday_command[0] + '` is not a valid birthday command'
-
-def check_if_user_has_birthday(user, json):
-    for users in json['birthdays']:
-        if user in users:
-            return True
-
-    return False
