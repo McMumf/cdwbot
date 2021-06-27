@@ -40,8 +40,6 @@ async def on_message(message):
     if message.author == client.user:
         return
 
-    print(message.channel.id)
-
     if message.content.startswith('$dave'):
         # Caution, Profanity
         msg = "Fuck you, Dave"
