@@ -50,3 +50,14 @@ def birthday_controller(msg):
         return 'User not found~\nplease add your birthday using `$birthday add <date>`'
     else:
         return '`' + birthday_command[0] + '` is not a valid birthday command'
+
+def check_birthdays():
+    birthday_json_object = json.load("./birthdays.json")
+
+    userBirthdays = []
+
+    for user in birthday_json_object['birthdays']:
+        if birthday_json_object['birthdays'][user] == datetime.today().strftime("%Y-%m-%d"):
+            userBirthdays.append(user)
+
+    return userBirthdays
