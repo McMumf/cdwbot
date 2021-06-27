@@ -15,7 +15,7 @@ client = discord.Client(intents=intents)
 @client.event
 async def on_ready():
     for guild in client.guilds:
-        if guild.name == os.getenv('DISCORD_BOT_TOKEN'):
+        if guild.name == os.getenv('DISCORD_SERVER'):
             break
 
     print(
@@ -54,4 +54,4 @@ async def on_message(message):
 birthdayLoop.start()
 
 utilities.bot_init()
-client.run(os.getenv('DISCORD_TOKEN'))
+client.run(os.getenv('DISCORD_BOT_TOKEN'))
