@@ -52,12 +52,15 @@ def birthday_controller(msg):
         return '`' + birthday_command[0] + '` is not a valid birthday command'
 
 def check_birthdays():
-    birthday_json_object = json.load("./birthdays.json")
+
+    with open('birthdays.json', 'r') as birthday_file:
+        birthday_json_object = json.load(birthday_file)
 
     userBirthdays = []
 
     for user in birthday_json_object['birthdays']:
         if birthday_json_object['birthdays'][user] == datetime.today().strftime("%Y-%m-%d"):
+            print('found user')
             userBirthdays.append(user)
 
     return userBirthdays

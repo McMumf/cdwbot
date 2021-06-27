@@ -7,13 +7,15 @@ import functions, utilities
 
 intents = discord.Intents.default()
 intents.members = True
+intents.reactions = True
+intents.guilds = True
 
 client = discord.Client(intents=intents)
 
 @client.event
 async def on_ready():
     for guild in client.guilds:
-        if guild.name == os.getenv('DISCORD_SERVER'):
+        if guild.name == os.getenv('DISCORD_BOT_TOKEN'):
             break
 
     print(
@@ -21,25 +23,24 @@ async def on_ready():
         f'{guild.name}(id: {guild.id})'
     )
 
-@tasks.loop(hours = 24)
+@tasks.loop(hours=24)
 async def birthdayLoop():
 
-    for guild in client.guilds:
-        if guild.name == os.getenv('DISCORD_SERVER'):
-            channel = discord.utils.get(guild.channels, name = 'general')
+    channel = client.get_channel(int(os.getenv('DISCORD_GENERAL_CHANNEL_ID').strip()))
 
-            for user in functions.check_birthdays():
-                await channel.send("Happy Birthday, " + user + "!!!")
+    print(channel)
 
-            break
-
-
+    for user in functions.check_birthdays():
+        await channel.send("Happy Birthday, " + user + "!!!")
 
 # This is where you put the commands
 @client.event
 async def on_message(message):
+
     if message.author == client.user:
         return
+
+    print(message.channel.id)
 
     if message.content.startswith('$dave'):
         # Caution, Profanity
